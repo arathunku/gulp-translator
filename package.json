@@ -1,0 +1,34 @@
+{
+    "name": "gulp-translator",
+    "main": "translator-gulp.js",
+    "version": "0.0.1",
+    "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
+    "licence": "MIT",
+    "repository": {
+    "type": "git",
+    "url": "git://github.com/arathunku/gulp-translator"
+    },
+    "keywords": [
+        "gulpplugin",
+        "i18n",
+        "translation",
+        "locale",
+        "html",
+        "translate",
+        "translator",
+        "gulp"
+    ],
+    "author": "arathunku <arathunku@gmail.com>",
+    "dependencies": {
+        "through2": "0.6.1",
+        "gulp-util": "3.0.0"
+    },
+    "devDependencies": {
+        "gulp": "3.8.7",
+        "mocha": "~1.17.0",
+        "vinyl": "~0.2.3"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --reporter spec --timeout 100"
+    }
+}

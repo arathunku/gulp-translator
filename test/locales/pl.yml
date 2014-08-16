@@ -1,0 +1,9 @@
+pl:
+  title: "Tytul"
+  first: pierwszy
+  errors:
+    username:
+      uniquness: "Nazwa uzytkownika nie jest unikalna"
+      valid: "Nazwa uzytkownika jest niepoprawna"
+  user:
+    title: "POLSKI TYTUL"
