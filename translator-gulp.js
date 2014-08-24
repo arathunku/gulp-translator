@@ -14,6 +14,8 @@ var plugin = function (localePath) {
   });
 
   return through.obj(function(file, enc, cb){
+    var self = this;
+
     if(file.isNull()) {
       this.push(file);
       return cb();
@@ -24,10 +26,15 @@ var plugin = function (localePath) {
       return cb();
     }
 
-    file.contents = new Buffer(translator.translate(String(file.contents)));
+    translator.translate(String(file.contents)).then(function(content){
+      file.contents = new Buffer(content);
+      self.push(file);
+      return cb();
 
-    this.push(file);
-    cb();
+    }, function(error){
+      self.emit('error', new PluginError(PLUGIN_NAME, (error||'') + " and is used in " + file.path));
+      return cb();
+    });
   });
 };
 

@@ -1,7 +1,7 @@
 {
     "name": "gulp-translator",
     "main": "translator-gulp.js",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
     "licence": "MIT",
     "repository": {
@@ -21,7 +21,8 @@
     "author": "arathunku <arathunku@gmail.com>",
     "dependencies": {
         "through2": "0.6.1",
-        "gulp-util": "3.0.0"
+        "gulp-util": "3.0.0",
+        "q": "1.0.1"
     },
     "devDependencies": {
         "gulp": "3.8.7",

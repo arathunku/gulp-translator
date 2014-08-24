@@ -1,5 +1,5 @@
 # Gulp Translator
-> Almost like string replace but with using locales.
+> Almost like string replace but using locales
 
 ## Usage
 
@@ -25,7 +25,50 @@ gulp.task('translate', function() {
 });
 ```
 
-And then, pass contents of the file, everything between `{{  }}`` will be interpolated with locale.
+or better, handle errors:
+```javascript
+gulp.task('translate', function() {
+  var translations = ['pl', 'en'];
+
+  translations.forEach(function(translation){
+    gulp.src('app/views/**/*.html')
+      .pipe(
+        gulpTranslateTemplate('./locales/'+ translation +'.yml')
+        .on('error', function(){
+          console.dir(arguments);
+        })
+      )
+      .pipe(gulp.dest('dist/views/' + translation));
+  });
+});
+```
+
+## Usage
+
+I'm using angular-like syntax. Expressions in `{{}}` with ` | translate `
+filter will be translated.
+
+Following examples assume that "title" in locales equals "new TITLE"
+
+Example:
+```
+{{ title | translate }} will be change to "new TITLE"
+
+```
+If you'd like to use filters(look at the bottom to check available filters) just pass them after like that:
+
+```
+{{ title | translate | lowercase }} will be change to "new title"
+
+```
+
+
+```
+{{ title | translate | uppercase }} will be change to "NEW TITLE"
+
+```
+
+If you're still not sure, please look at tests.
 
 ## API
 
@@ -38,6 +81,20 @@ Type: `String`
 
 The string is a path to a nameOfTheFile.yml with your locales. Please look at test/locales for examples.
 
+## Available filters:
+
+  - lowercase
+  - uppercase
+
+## TODO:
+
+  - refactor tests
+  - work on matchers (sigh...)
+  - add filters:
+    - capitalize
+    - reverse
+
+  - add option to dynamically add filters
 
 # License
   MIT
