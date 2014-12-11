@@ -16,7 +16,7 @@ var translate = require('gulp-translator');
 
 gulp.task('translate', function() {
   gulp.src('app/views/**/*.tpl.html')
-    .pipe(translate('./locales/*.yml'))
+    .pipe(translate('./locales/*.yml', {replace:'tpl'}))
     .pipe(gulp.dest('dist/views/'));
 });
 ```
