@@ -33,10 +33,14 @@ describe('gulp-translator', function() {
 
   describe('with buffer contents', function() {
     it('should interpolate strings - ENGLISH', function(done) {
-      var translator = gulpTranslator('./test/locales/en.yml');
-      var n = 0;
       var content = new Buffer("{{ user.title | translate }} {{title | translate}}");
+      var file = new File({
+        path:'test/',
+        contents: content
+      });
       var translated =  "ENGLISH USER TITLE Title";
+      var translator = new Stream(file).pipe(gulpTranslator('./test/locales/en.yml'));
+      var n = 0;
 
       var _transform = function(file, enc, callback) {
         assert.equal(file.contents.toString('utf8'), translated);
@@ -52,16 +56,18 @@ describe('gulp-translator', function() {
 
       var t = through.obj(_transform, _flush);
       translator.pipe(t);
-      translator.end(new File({
-        contents: content
-      }));
+      translator.end(file);
     });
 
     it('should interpolate strings - POLISH', function(done) {
-      var translator = gulpTranslator('./test/locales/pl.yml');
-      var n = 0;
       var content = new Buffer("{{ user.title | translate }} {{title | translate}}");
+      var file = new File({
+        path:'test/',
+        contents: content
+      });
       var translated = "POLSKI TYTUL Tytul";
+      var translator = new Stream(file).pipe(gulpTranslator('./test/locales/pl.yml'));
+      var n = 0;
 
       var _transform = function(file, enc, callback) {
         assert.equal(file.contents.toString('utf8'), translated);
@@ -77,9 +83,7 @@ describe('gulp-translator', function() {
 
       var t = through.obj(_transform, _flush);
       translator.pipe(t);
-      translator.end(new File({
-        contents: content
-      }));
+      translator.end(file);
     });
 
     it("should throw error about undefined locale", function(done){
@@ -114,10 +118,14 @@ describe('gulp-translator', function() {
 
     describe('filters', function() {
       it("should lowecase translated text", function(done){
-        var translator = gulpTranslator('./test/locales/en.yml');
-        var n = 0;
         var content = new Buffer("{{ title | translate }} {{title | translate | lowercase}}");
+        var file = new File({
+          path:'test/',
+          contents: content
+        });
         var translated = "Title title";
+        var translator = new Stream(file).pipe(gulpTranslator('./test/locales/en.yml'));
+        var n = 0;
 
         var _transform = function(file, enc, callback) {
           assert.equal(file.contents.toString('utf8'), translated);
@@ -133,16 +141,18 @@ describe('gulp-translator', function() {
 
         var t = through.obj(_transform, _flush);
         translator.pipe(t);
-        translator.end(new File({
-          contents: content
-        }));
+        translator.end(file);
       });
 
       it("should uppercase translated text", function(done){
-        var translator = gulpTranslator('./test/locales/en.yml');
-        var n = 0;
         var content = new Buffer("{{ title | translate }} {{title | translate | uppercase}}");
+        var file = new File({
+          path:'test/',
+          contents: content
+        });
         var translated = "Title TITLE";
+        var translator = new Stream(file).pipe(gulpTranslator('./test/locales/en.yml'));
+        var n = 0;
 
         var _transform = function(file, enc, callback) {
           assert.equal(file.contents.toString('utf8'), translated);
@@ -158,9 +168,7 @@ describe('gulp-translator', function() {
 
         var t = through.obj(_transform, _flush);
         translator.pipe(t);
-        translator.end(new File({
-          contents: content
-        }));
+        translator.end(file);
       });
 
       it("should throw error if unsupported filter", function(done){

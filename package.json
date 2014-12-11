@@ -1,36 +1,40 @@
 {
-    "name": "gulp-translator",
-    "main": "translator-gulp.js",
-    "version": "0.1.0",
-    "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
-    "licence": "MIT",
-    "repository": {
+  "name": "gulp-translator",
+  "main": "translator-gulp.js",
+  "version": "0.2.0",
+  "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
+  "licence": "MIT",
+  "repository": {
     "type": "git",
     "url": "git://github.com/arathunku/gulp-translator"
-    },
-    "keywords": [
-        "gulpplugin",
-        "i18n",
-        "translation",
-        "locale",
-        "html",
-        "translate",
-        "translator",
-        "gulp"
-    ],
-    "author": "arathunku <arathunku@gmail.com>",
-    "dependencies": {
-        "through2": "0.6.1",
-        "gulp-util": "3.0.0",
-        "q": "1.0.1",
-        "yamljs": "^0.2.1"
-    },
-    "devDependencies": {
-        "gulp": "3.8.7",
-        "mocha": "~1.17.0",
-        "vinyl": "~0.2.3"
-    },
-    "scripts": {
-        "test": "./node_modules/.bin/mocha --reporter spec --timeout 100"
-    }
+  },
+  "keywords": [
+    "gulpplugin",
+    "i18n",
+    "translation",
+    "locale",
+    "html",
+    "translate",
+    "translator",
+    "gulp"
+  ],
+  "author": "arathunku <arathunku@gmail.com>",
+  "contributors": [
+    "Raphael Luchini <laster.raphael@gmail.com> (https://github.com/raphaelluchini)"
+  ],
+  "dependencies": {
+    "glob": "^4.3.1",
+    "gulp-util": "3.0.0",
+    "q": "1.0.1",
+    "through2": "0.6.1",
+    "yamljs": "^0.2.1"
+  },
+  "devDependencies": {
+    "gulp": "3.8.7",
+    "mocha": "~1.17.0",
+    "vinyl": "~0.2.3"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec --timeout 100"
+  }
 }

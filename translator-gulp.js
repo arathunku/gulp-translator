@@ -1,41 +1,73 @@
-var fs = require('fs');
 var through = require('through2');
 var gutil = require('gulp-util');
+var glob = require("glob");
 var PluginError = gutil.PluginError;
-
+var Q = require('q');
+var Path = require('path');
 var Translator = require("./lib/translator.js");
+var File = require('vinyl');
 
 // consts
 const PLUGIN_NAME = 'gulp-translator';
 
+function parsePath(path) {
+  var extname = Path.extname(path);
+  return {
+    dirname: Path.dirname(path),
+    basename: Path.basename(path, extname),
+    extname: extname
+  };
+}
+
 var plugin = function (localePath) {
-  var translator = new Translator({
-    localePath: localePath
+  var translations = glob.sync(localePath);
+  var translators = [];
+  translations.forEach(function(item){
+    translators.push(new Translator({
+      localePath: item
+    }));
   });
 
-  return through.obj(function(file, enc, cb){
+
+  var stream = through.obj(function(file, enc, cb){
     var self = this;
 
     if(file.isNull()) {
-      this.push(file);
+      stream.push(file);
       return cb();
     }
 
     if(file.isStream()) {
-      this.emit('error', new PluginError(PLUGIN_NAME, 'Streaming not supported'));
+      stream.emit('error', new PluginError(PLUGIN_NAME, 'Streaming not supported'));
       return cb();
     }
 
-    translator.translate(String(file.contents)).then(function(content){
-      file.contents = new Buffer(content);
-      self.push(file);
-      return cb();
+    var parsedPath = parsePath(file.relative);
+    var p = Path.join(parsedPath.dirname, parsedPath.basename + parsedPath.extname);
 
+    var promises = [];
+    translators.forEach(function(translator){
+      promises.push(translator.translate(String(file.contents)));
+    });
+
+    Q.all(promises).then(function(item){
+      item.forEach(function(obj){
+
+        stream.push(new File({
+          cwd: file.cwd,
+          base: file.base,
+          path: file.path.replace('tpl', obj.locale),
+          contents: new Buffer(obj.value)
+        }));
+      });
+      cb();
     }, function(error){
-      self.emit('error', new PluginError(PLUGIN_NAME, (error||'') + " and is used in " + file.path));
+      stream.emit('error', new PluginError(PLUGIN_NAME, (error||'') + " and is used in " + file.path));
       return cb();
     });
   });
+
+  return stream;
 };
 
 module.exports = plugin;
