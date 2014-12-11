@@ -61,7 +61,7 @@ var plugin = function (localePath, options) {
         }else{
 
           var p = parsePath(file.path).basename;
-          path = file.path.replace(p, p + obj.locale)
+          path = file.path.replace(p, p + obj.locale);
         }
 
         stream.push(new File({
