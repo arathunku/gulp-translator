@@ -1,12 +1,12 @@
 {
-  "name": "gulp-translator",
+  "name": "gulp-text-translator",
   "main": "translator-gulp.js",
   "version": "0.2.0",
   "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
   "licence": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/arathunku/gulp-translator"
+    "url": "git://github.com/raphaelluchini/gulp-translator"
   },
   "keywords": [
     "gulpplugin",
