@@ -19,7 +19,9 @@ function parsePath(path) {
   };
 }
 
-var plugin = function (localePath) {
+var plugin = function (localePath, options) {
+  var replaceString = (options) ? options.replace : null;
+
   var translations = glob.sync(localePath);
   var translators = [];
   translations.forEach(function(item){
@@ -52,11 +54,20 @@ var plugin = function (localePath) {
 
     Q.all(promises).then(function(item){
       item.forEach(function(obj){
+        var path = file.path;
+
+        if(replaceString !== null){
+          path = path.replace(replaceString, obj.locale);
+        }else{
+
+          var p = parsePath(file.path).basename;
+          path = file.path.replace(p, p + obj.locale)
+        }
 
         stream.push(new File({
           cwd: file.cwd,
           base: file.base,
-          path: file.path.replace('tpl', obj.locale),
+          path: path,
           contents: new Buffer(obj.value)
         }));
       });
