@@ -15,31 +15,24 @@ Then, add it to your `gulpfile.js`:
 var translate = require('gulp-translator');
 
 gulp.task('translate', function() {
-  var translations = ['pl', 'en'];
-
-  translations.forEach(function(translation){
-    gulp.src('app/views/**/*.html')
-      .pipe(translate('./locales/'+ translation +'.yml'))
-      .pipe(gulp.dest('dist/views/' + translation));
-  });
+  gulp.src('app/views/**/*.tpl.html')
+    .pipe(translate('./locales/*.yml', {replace:'tpl'}))
+    .pipe(gulp.dest('dist/views/'));
 });
 ```
 
 or better, handle errors:
 ```javascript
 gulp.task('translate', function() {
-  var translations = ['pl', 'en'];
 
-  translations.forEach(function(translation){
-    gulp.src('app/views/**/*.html')
-      .pipe(
-        gulpTranslateTemplate('./locales/'+ translation +'.yml')
-        .on('error', function(){
-          console.dir(arguments);
-        })
-      )
-      .pipe(gulp.dest('dist/views/' + translation));
-  });
+  gulp.src('app/views/**/*.html')
+    .pipe(
+      gulpTranslateTemplate('./locales/*.yml')
+      .on('error', function(){
+        console.dir(arguments);
+      })
+    )
+    .pipe(gulp.dest('dist/views/'));
 });
 ```
 
