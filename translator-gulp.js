@@ -5,7 +5,7 @@ var PluginError = gutil.PluginError;
 
 var Translator = require("./lib/translator.js");
 
-const PLUGIN_NAME = 'gulp-localizer';
+const PLUGIN_NAME = 'gulp-translator';
 
 var plugin = function (options) {
   var translator = new Translator(options);
