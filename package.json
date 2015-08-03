@@ -1,8 +1,8 @@
 {
     "name": "gulp-translator",
     "main": "translator-gulp.js",
-    "version": "0.1.0",
-    "description": "Translate your files by using {{ syntax }} and locales/something.yml files.",
+    "version": "0.1.1",
+    "description": "Translate your files by using {{ syntax }} and locales/something.yml or *.json files.",
     "licence": "MIT",
     "repository": {
     "type": "git",

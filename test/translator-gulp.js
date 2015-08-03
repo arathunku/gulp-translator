@@ -120,6 +120,7 @@ describe('gulp-translator', function() {
         var translated = "Title title";
 
         var _transform = function(file, enc, callback) {
+          console.log('equal', file, enc, translated);
           assert.equal(file.contents.toString('utf8'), translated);
           n++;
           callback();
