@@ -5,13 +5,10 @@ var PluginError = gutil.PluginError;
 
 var Translator = require("./lib/translator.js");
 
-// consts
 const PLUGIN_NAME = 'gulp-translator';
 
-var plugin = function (localePath) {
-  var translator = new Translator({
-    localePath: localePath
-  });
+var plugin = function (options) {
+  var translator = new Translator(options);
 
   return through.obj(function(file, enc, cb){
     var self = this;
@@ -25,7 +22,6 @@ var plugin = function (localePath) {
       this.emit('error', new PluginError(PLUGIN_NAME, 'Streaming not supported'));
       return cb();
     }
-
     translator.translate(String(file.contents)).then(function(content){
       file.contents = new Buffer(content);
       self.push(file);

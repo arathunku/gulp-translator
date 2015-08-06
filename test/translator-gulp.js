@@ -32,7 +32,7 @@ describe('gulp-translator', function() {
   });
 
   describe('with buffer contents', function() {
-    it('should interpolate strings - ENGLISH', function(done) {
+    it('should interpolate strings  from *.yml locale file - ENGLISH', function(done) {
       var translator = gulpTranslator('./test/locales/en.yml');
       var n = 0;
       var content = new Buffer("{{ user.title | translate }} {{title | translate}}");
@@ -57,11 +57,36 @@ describe('gulp-translator', function() {
       }));
     });
 
-    it('should interpolate strings - POLISH', function(done) {
+    it('should interpolate strings  from *.yml locale file - POLISH', function(done) {
       var translator = gulpTranslator('./test/locales/pl.yml');
       var n = 0;
       var content = new Buffer("{{ user.title | translate }} {{title | translate}}");
       var translated = "POLSKI TYTUL Tytul";
+
+      var _transform = function(file, enc, callback) {
+        assert.equal(file.contents.toString('utf8'), translated);
+        n++;
+        callback();
+      };
+
+      var _flush = function(callback) {
+        assert.equal(n, 1);
+        done();
+        callback();
+      };
+
+      var t = through.obj(_transform, _flush);
+      translator.pipe(t);
+      translator.end(new File({
+        contents: content
+      }));
+    });
+
+    it('should interpolate strings from *.json locale file - RUSSIAN', function(done) {
+      var translator = gulpTranslator('./test/locales/ru.json');
+      var n = 0;
+      var content = new Buffer("{{ user.title | translate }} {{title | translate}}");
+      var translated = "РУССКИЙ ЗАГОЛОВОК Заголовок";
 
       var _transform = function(file, enc, callback) {
         assert.equal(file.contents.toString('utf8'), translated);
@@ -100,7 +125,7 @@ describe('gulp-translator', function() {
 
       translator.on('error', function(err){
         assert.equal(err.message,
-          'Cannot find that key in locales {{ unsupported | translate }} and is used in /path');
+          'Error: No such content (unsupported) in locale file and is used in /path');
         done();
       });
 
@@ -163,6 +188,81 @@ describe('gulp-translator', function() {
         }));
       });
 
+      it("should capitalize translated text", function(done){
+        var translator = gulpTranslator('./test/locales/en.yml');
+        var n = 0;
+        var content = new Buffer("{{ title | translate }} {{user.title | translate | capitalize}}");
+        var translated = "Title English user title";
+
+        var _transform = function(file, enc, callback) {
+          assert.equal(file.contents.toString('utf8'), translated);
+          n++;
+          callback();
+          done();
+        };
+
+        var _flush = function(callback) {
+          assert.equal(n, 1);
+          callback();
+        };
+
+        var t = through.obj(_transform, _flush);
+        translator.pipe(t);
+        translator.end(new File({
+          contents: content
+        }));
+      });
+
+      it("should capitalize every word in translated text", function(done){
+        var translator = gulpTranslator('./test/locales/en.yml');
+        var n = 0;
+        var content = new Buffer("{{ title | translate }} {{user.title | translate | capitalizeEvery}}");
+        var translated = "Title English User Title";
+
+        var _transform = function(file, enc, callback) {
+          assert.equal(file.contents.toString('utf8'), translated);
+          n++;
+          callback();
+          done();
+        };
+
+        var _flush = function(callback) {
+          assert.equal(n, 1);
+          callback();
+        };
+
+        var t = through.obj(_transform, _flush);
+        translator.pipe(t);
+        translator.end(new File({
+          contents: content
+        }));
+      });
+
+      it("should reverse translated text", function(done){
+        var translator = gulpTranslator('./test/locales/en.yml');
+        var n = 0;
+        var content = new Buffer("{{ title | translate }} {{user.title | translate | reverse}}");
+        var translated = "Title ELTIT RESU HSILGNE";
+
+        var _transform = function(file, enc, callback) {
+          assert.equal(file.contents.toString('utf8'), translated);
+          n++;
+          callback();
+          done();
+        };
+
+        var _flush = function(callback) {
+          assert.equal(n, 1);
+          callback();
+        };
+
+        var t = through.obj(_transform, _flush);
+        translator.pipe(t);
+        translator.end(new File({
+          contents: content
+        }));
+      });
+
       it("should throw error if unsupported filter", function(done){
         var translator = gulpTranslator('./test/locales/en.yml');
         var n = 0;
@@ -180,7 +280,7 @@ describe('gulp-translator', function() {
         };
 
         translator.on('error', function(err){
-          assert.equal(err.message, 'unsupported filter is not supported and is used in /path');
+          assert.equal(err.message, 'Error: unsupported filter is not supported and is used in /path');
           done();
         });
 
