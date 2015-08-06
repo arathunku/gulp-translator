@@ -188,11 +188,6 @@ describe('gulp-translator', function() {
         }));
       });
 
-
-
-
-
-
       it("should capitalize translated text", function(done){
         var translator = gulpTranslator('./test/locales/en.yml');
         var n = 0;
@@ -267,18 +262,6 @@ describe('gulp-translator', function() {
           contents: content
         }));
       });
-
-
-
-
-
-
-
-
-
-
-
-
 
       it("should throw error if unsupported filter", function(done){
         var translator = gulpTranslator('./test/locales/en.yml');
