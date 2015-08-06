@@ -47,12 +47,6 @@ gulp.task('translate', function() {
 ## Options
 
 
-  this.lang = options.lang;
-      this.localePath = options.localePath;
-      this.localeDirectory = options.localeDirectory;
-      this.localeExt = options.localeExt;
-
-
 `options` in `translate` function is:
   * `String` Path to locale file.
   * `Object`
